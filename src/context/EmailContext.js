@@ -1,3 +1,4 @@
+// EmailContext.js
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
@@ -76,9 +77,9 @@ export const EmailProvider = ({ children }) => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "D" || event.key === "d") {
+    if (event.key === "D") {
       if (selectedEmails.length > 0) deleteEmail(selectedEmails[0].threadId);
-    } else if (event.key === "R" || event.key === "r") {
+    } else if (event.key === "R") {
       setReplying(true);
     }
   };
@@ -88,6 +89,31 @@ export const EmailProvider = ({ children }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedEmails]);
 
+  const sendReply = async (threadId, replyBody) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const email = selectedEmails[0];
+      await axios.post(
+        `https://hiring.reachinbox.xyz/api/v1/onebox/reply/${threadId}`,
+        {
+          from: email.fromEmail || "your-email@example.com",
+          to: email.toEmail || "recipient@example.com",
+          subject: `Re: ${email.subject || "Your Subject"}`,
+          body: replyBody,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setReplying(false);
+    } catch (error) {
+      console.error("Error sending reply:", error);
+      setError("Failed to send reply.");
+    }
+  };
+
   return (
     <EmailContext.Provider
       value={{
@@ -95,6 +121,7 @@ export const EmailProvider = ({ children }) => {
         selectedEmails,
         fetchEmailDetail,
         deleteEmail,
+        sendReply,
         replying,
         setReplying,
         error,
