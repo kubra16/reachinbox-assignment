@@ -1,11 +1,8 @@
 import React from "react";
-import { useAuth } from "../context/Authcontext";
+import MainLayout from "./MainLayout";
 
 const OneBox = () => {
-  const { token } = useAuth();
-
-  console.log(token);
-  return <div>OneBox</div>;
+  return <MainLayout />;
 };
 
 export default OneBox;

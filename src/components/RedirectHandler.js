@@ -10,11 +10,16 @@ const RedirectHandler = () => {
     const token = params.get("token");
 
     if (token) {
+      // Store the token in local storage
       localStorage.setItem("authToken", token);
+
+      // Set the Authorization header for Axios
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      // Redirect to the desired route
       navigate("/onebox");
     } else {
-      console.error("Token not found");
+      console.error("Token not found in URL");
     }
   }, [navigate]);
 
