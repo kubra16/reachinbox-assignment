@@ -57,11 +57,14 @@ export const EmailProvider = ({ children }) => {
   const deleteEmail = async (threadId) => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete(`/api/onebox/${threadId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${threadId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setEmails((prevEmails) =>
         prevEmails.filter((email) => email.threadId !== threadId)
       );
