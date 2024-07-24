@@ -21,7 +21,8 @@ const ReplySection = ({ emailArray = [], threadId, onClose }) => {
   const theme = useTheme();
 
   const handleSave = () => {
-    console.log("Saved content:", replyBody);
+    console.log("Saved ", replyBody);
+    localStorage.setItem("savedReplyBody", replyBody);
   };
 
   const handleSend = () => {
