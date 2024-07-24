@@ -29,5 +29,5 @@ npm install
 ## App will run on
 
 ```bash
-    http:localhost:5000
+    http:localhost:3000
 ```
