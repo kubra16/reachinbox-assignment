@@ -1,4 +1,3 @@
-// EmailContext.js
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
@@ -9,6 +8,22 @@ export const EmailProvider = ({ children }) => {
   const [selectedEmails, setSelectedEmails] = useState([]);
   const [replying, setReplying] = useState(false);
   const [error, setError] = useState(null);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [emailToDelete, setEmailToDelete] = useState(null);
+
+  const handleDeleteClick = (emailId) => {
+    setEmailToDelete(emailId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (emailToDelete) {
+      deleteEmail(emailToDelete);
+      setDeleteModalOpen(false);
+      setEmailToDelete(null);
+    }
+  };
 
   const fetchEmails = async () => {
     try {
@@ -78,7 +93,8 @@ export const EmailProvider = ({ children }) => {
 
   const handleKeyDown = (event) => {
     if (event.key === "D") {
-      if (selectedEmails.length > 0) deleteEmail(selectedEmails[0].threadId);
+      if (selectedEmails.length > 0)
+        handleDeleteClick(selectedEmails[0].threadId);
     } else if (event.key === "R") {
       setReplying(true);
     }
@@ -125,6 +141,12 @@ export const EmailProvider = ({ children }) => {
         replying,
         setReplying,
         error,
+        handleDeleteClick,
+        handleConfirmDelete,
+        deleteModalOpen,
+        setDeleteModalOpen,
+        emailToDelete,
+        setEmailToDelete,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -13,28 +13,37 @@ import { AuthProvider } from "./context/Authcontext";
 import RedirectHandler from "./components/RedirectHandler";
 import Home from "./components/Home";
 import { EmailProvider } from "./context/EmailContext";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+import darkTheme from "./themes/darkTheme";
+import lightTheme from "./themes/lightTheme";
 
 const App = () => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  const theme = isDarkMode ? darkTheme : lightTheme;
+
+  const handleToggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
     <AuthProvider>
       <EmailProvider>
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
             <Routes>
               <Route path="/" element={<LoginPage />} />
               <Route path="/redirect-handler" element={<RedirectHandler />} />
-              <Route path="/onebox" element={<OneBox />}>
+              <Route
+                path="/onebox"
+                element={
+                  <OneBox
+                    isDarkMode={isDarkMode}
+                    handleToggleTheme={handleToggleTheme}
+                  />
+                }
+              >
                 <Route path="home" element={<Home />} />
-                {/* <Route path="profile" element={<ProfileComponent />} /> */}
-                {/* <Route path="emails" element={<EmailsComponent />} /> */}
-                {/* Add other routes as needed */}
                 <Route element={<Navigate to="/onebox/home" />} />
               </Route>
             </Routes>

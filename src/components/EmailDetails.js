@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Typography, Divider, Button } from "@mui/material";
+import { Box, Typography, Divider, Button, useTheme } from "@mui/material";
 import DeleteModal from "./DeleteModal";
 import ReplySection from "./ReplySection";
 import { EmailContext } from "../context/EmailContext";
@@ -11,25 +11,16 @@ const EmailDetails = ({ emails }) => {
     replying,
     setReplying,
     selectedEmails,
-    setSelectedEmails,
     error,
+    handleDeleteClick,
+    handleConfirmDelete,
+    deleteModalOpen,
+    setDeleteModalOpen,
+    emailToDelete,
+    setEmailToDelete,
   } = useContext(EmailContext);
 
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [emailToDelete, setEmailToDelete] = useState(null);
-
-  const handleDeleteClick = (emailId) => {
-    setEmailToDelete(emailId);
-    setDeleteModalOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    if (emailToDelete) {
-      deleteEmail(emailToDelete);
-      setDeleteModalOpen(false);
-      setEmailToDelete(null);
-    }
-  };
+  const theme = useTheme();
 
   const handleReplyOpen = () => {
     setReplying(true);
@@ -54,25 +45,54 @@ const EmailDetails = ({ emails }) => {
 
   return (
     <Box
-      sx={{ flexGrow: 1, padding: 2, display: "flex", flexDirection: "column" }}
+      sx={{
+        flexGrow: 1,
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      }}
     >
-      <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
-        <Button
-          onClick={() => handleDeleteClick(emails[0].id)}
-          color="primary"
-          variant="outlined"
-          sx={{ mb: 2 }}
+      <Box
+        sx={{
+          flexGrow: 1,
+          padding: 2,
+          overflowY: "auto",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
         >
-          Delete
-        </Button>
+          <Typography variant="subtitle1">
+            <div style={{ display: "flex", flexDirection: "column", p: 2 }}>
+              From: {emails[0].fromName}
+              <span style={{ color: theme.palette.text.secondary, p: 2 }}>
+                ({emails[0].fromEmail})
+              </span>
+            </div>
+          </Typography>
+
+          <Button
+            onClick={() => handleDeleteClick(emails[0].threadId)}
+            color="primary"
+            variant="outlined"
+            sx={{ mb: 2 }}
+          >
+            Delete
+          </Button>
+        </Box>
+
         {emails.map((email) => (
           <Box
             key={email.id}
             sx={{
-              bgcolor: "#141517",
+              bgcolor: theme.palette.background.paper,
               p: 2,
               mb: 2,
-              border: "1px solid #333",
+              border: `1px solid ${theme.palette.divider}`,
               borderRadius: 2,
             }}
           >
@@ -106,21 +126,56 @@ const EmailDetails = ({ emails }) => {
           </Box>
         ))}
         {replying && emails.length > 0 && (
-          <ReplySection
-            emailArray={selectedEmails}
-            threadId={emails[0].threadId}
-            onClose={handleReplyClose}
-          />
+          <Box
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "end",
+              zIndex: 1200,
+            }}
+          >
+            <Box
+              sx={{
+                padding: 3,
+                borderRadius: 2,
+                maxWidth: "600px",
+                width: "100%",
+                maxHeight: "200vh",
+                overflowY: "auto",
+              }}
+            >
+              <ReplySection
+                emailArray={selectedEmails}
+                threadId={emails[0].threadId}
+                onClose={handleReplyClose}
+              />
+            </Box>
+          </Box>
         )}
       </Box>
+
       {!replying && (
-        <Box sx={{ display: "flex" }}>
+        <Box
+          sx={{
+            padding: 2,
+            borderTop: `1px solid ${theme.palette.divider}`,
+            backgroundColor: theme.palette.background.default,
+            position: "sticky",
+            bottom: 0,
+            zIndex: 1,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <Button
             onClick={handleReplyOpen}
             variant="contained"
             sx={{
-              width: "auto",
-              maxWidth: 200,
               background: "linear-gradient(to left, #4B63DD, #0524BF)",
               color: "#fff",
               fontSize: "15px",

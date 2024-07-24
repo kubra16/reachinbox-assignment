@@ -1,18 +1,33 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  useTheme,
+} from "@mui/material";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 
-const TopBar = () => {
+const TopBar = ({ isDarkMode, handleToggleTheme }) => {
+  const theme = useTheme(); // Access the current theme
+
   return (
     <AppBar
-      position="relative"
-      sx={{ bgcolor: "#1F1F1F", color: "white", height: 50 }}
+      position="static"
+      sx={{
+        bgcolor: isDarkMode
+          ? theme.palette.background.paper
+          : theme.palette.primary.main,
+      }}
     >
-      <Toolbar sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      <Toolbar>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
           OneBox
         </Typography>
-        <Button color="inherit">Login</Button>
-        <Button color="inherit">Times Workspace</Button>
+        <IconButton edge="end" color="inherit" onClick={handleToggleTheme}>
+          {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

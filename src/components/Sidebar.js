@@ -9,14 +9,17 @@ import notification from "../assets/notification.svg";
 import bar from "../assets/bar.svg";
 import draw from "../assets/draw.svg";
 import logo from "../assets/logo.svg";
+import { useTheme } from "@emotion/react";
 
 const Sidebar = ({ setActiveSidebarItem }) => {
+  const theme = useTheme();
   return (
     <List
       sx={{
         width: 60,
-        bgcolor: "#101113",
-        height: "100vh", // Full height
+        // bgcolor: "#101113",
+        backgroundColor: theme.palette.background.primary,
+        height: "100vh",
         color: "white",
         display: "flex",
         flexDirection: "column",

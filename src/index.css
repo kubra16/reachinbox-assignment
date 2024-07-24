@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.hide-scrollbar {
+  overflow: hidden;
+
+}
+
+
+.scrollable {
+  overflow: auto;
+  scrollbar-width: none;
+
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;
+}

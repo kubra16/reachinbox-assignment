@@ -3,7 +3,7 @@ import EmailList from "./EmailList";
 
 const Home = () => {
   return (
-    <div>
+    <div style={{ height: "100vh", margin: 0 }}>
       <EmailList />
     </div>
   );
