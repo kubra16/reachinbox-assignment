@@ -25,7 +25,7 @@ npm install
 - Create a .env file in the root directory and paste your credentials.
 
 ```bash
-    REACT_APP_API_URL=http://localhost:5000
+    REACT_APP_API_URL=http://localhost:3000
 ```
 
 ## start the server
