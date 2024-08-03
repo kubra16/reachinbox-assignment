@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 const AuthContext = createContext();
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const loginWithGoogle = async () => {
     try {
       const popup = window.open(
-        "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=http://localhost:3000/redirect-handler",
+        `https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=${BASE_URL}/redirect-handler`,
         "google-login"
       );
 
