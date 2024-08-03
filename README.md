@@ -22,7 +22,7 @@ npm install
 
 ## Setup environment variables
 
-- Create a .env file in the root directory and paste your credentials.
+- Create a .env file in the root directory and paste this code.
 
 ```bash
     REACT_APP_API_URL=http://localhost:3000
