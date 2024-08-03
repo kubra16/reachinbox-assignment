@@ -20,6 +20,14 @@ cd reachinbox-assignment
 npm install
 ```
 
+## Setup environment variables
+
+- Create a .env file in the root directory and paste your credentials.
+
+```bash
+    REACT_APP_API_URL=http://localhost:5000
+```
+
 ## start the server
 
 ```bash
